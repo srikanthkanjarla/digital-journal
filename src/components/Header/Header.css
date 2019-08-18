@@ -1,0 +1,28 @@
+.header {
+  background-color: var(--primary-color);
+  padding: 1.3rem 0.3rem;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header h1 {
+  margin: 0 0 0 0.2rem;
+  font-size: 1.5rem;
+}
+.header nav {
+  margin-left: auto;
+}
+.header ul {
+  margin: 0;
+  display: flex;
+}
+.header li {
+  list-style-type: none;
+  margin: 0 0.4rem;
+}
+.header a {
+  color: #fff;
+  font-size: 1.1rem;
+  text-decoration: none;
+}

@@ -1,0 +1,18 @@
+.input-field,
+textarea {
+  padding: 0.8rem;
+  margin: 0.7rem;
+  /* border: 1px solid #00b9f8; */
+  border: none;
+  box-shadow: 0 0 2px 0px #00b9f8;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  width: 70%;
+  background-color: #ffffff;
+}
+.btn {
+  background-color: #00b9f8;
+  color: white;
+  width: 40%;
+  font-weight: 700;
+}

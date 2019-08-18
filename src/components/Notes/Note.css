@@ -1,0 +1,31 @@
+.notes-container {
+  padding: 1rem;
+}
+.note-card {
+  background-color: #f9f871;
+  width: 300px;
+  margin: 0 auto;
+  padding: 0.2rem 0 0.6rem 0;
+  margin: 0.3rem auto;
+  position: relative;
+}
+.note-card h2 {
+  margin: 0.5rem;
+}
+.note-btn-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+.edit-btn,
+.del-btn {
+  border: none;
+  padding: 0.3rem;
+}
+.edit-btn {
+  background-color: #00d3e2;
+  color: #ffffff;
+}
+.del-btn {
+  background-color: #ac3565;
+  color: #ffffff;
+}

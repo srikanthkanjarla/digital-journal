@@ -29,3 +29,9 @@
   background-color: #ac3565;
   color: #ffffff;
 }
+
+.add-note-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -5,7 +5,7 @@ import InputField from '../InputField/InputField';
 const AddNote = props => {
   const { title, body, handleChange, handleSubmit } = props;
   return (
-    <div>
+    <div className="add-note-form">
       <form onSubmit={handleSubmit}>
         <InputField type="text" name="title" placeholder="Title" handleChange={handleChange} value={title} required />
         <textarea rows="5" placeholder="body" name="body" onChange={handleChange} value={body} required />

@@ -1,31 +1,73 @@
-import React, { useState } from 'react';
-import Layout from '../Layout/Layout';
-import AddNoteForm from '../Notes/AddNoteForm';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import firebase from '../../firebase';
+import { withAuthContext } from '../Context';
 import NoteList from '../Notes/NoteList';
+import './Home.css';
 
-const Home = () => {
-  const [state, setState] = useState({ title: '', body: '' });
+const Home = props => {
   const [notes, setNotes] = useState([]);
-  const [noteId, setNoteId] = useState(0);
+  const [isUpdate,setUpdate] = useState(false);
+  const { authenticated } = props; // from auth context
 
-  const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.value });
+  useEffect(() => {
+    if (authenticated) {
+      const arr = [];
+      firebase.db
+        .collection('digital_notes')
+        .doc(firebase.auth.currentUser.uid)
+        .collection('notes')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            arr.push({ id: doc.id, title: doc.data().title, body: doc.data().body });
+          });
+        })
+        .then(() => {
+          setNotes(arr);
+        })
+        .catch(error => {
+          console.log('Eorror:', error);
+        });
+    }
+  }, [authenticated]);
+
+  const handleUpdateNote = (id) => {
+    // firebase.updateNote('DVXZClmFny3pEuz7Y7x2');
+    setUpdate(true);
   };
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    setNotes([...notes, { id: noteId, title: state.title, body: state.body }]);
-    setState({ title: '', body: '' });
-    setNoteId(noteId + 1);
+  const handleDeleteNote = noteID => {
+    firebase.deleteNote(noteID);
+    const arr = notes.filter(note => {
+      return note.id !== noteID;
+    });
+    setNotes(arr);
   };
 
   return (
-    <Layout>
-      <h2>Add New Note</h2>
-      <AddNoteForm handleChange={handleChange} handleSubmit={handleSubmit} title={state.title} body={state.body} />
-      <NoteList notes={notes} />
-    </Layout>
+    <div className="homepage">
+      {!authenticated ? (
+        <>
+          <div className="home-public">
+            <h2>Quickly capture Notes and access them wherever you go.</h2>
+            <Link to="/signup">Get Started</Link>
+          </div>
+        </>
+      ) : (
+        <div className="home-private">
+          <h2>My Notes</h2>
+          <Link to="/add-new-note">Add New Note</Link>
+          <NoteList notes={notes} handleUpdateNote={handleUpdateNote} handleDeleteNote={handleDeleteNote} />
+        </div>
+      )}
+    </div>
   );
 };
 
-export default Home;
+Home.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
+};
+
+export default withRouter(withAuthContext(Home));

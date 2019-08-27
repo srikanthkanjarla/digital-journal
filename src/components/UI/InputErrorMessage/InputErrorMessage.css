@@ -1,0 +1,10 @@
+.error-msg {
+  color: #a20021;
+  margin: 0;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.error-msg::before {
+  content: "*";
+  margin-right: 0.2rem;
+}

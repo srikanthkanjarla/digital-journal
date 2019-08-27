@@ -1,8 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import firebase from '../../firebase';
+import { withAuthContext } from '../Context';
 import './Header.css';
 
-const Header = () => {
+// const value = useContext(AuthContext);
+const Header = props => {
+  const logoutUser = async () => {
+    await firebase.auth.signOut();
+    props.history.push('/');
+  };
+  const { authenticated } = props;
   return (
     <header className="header">
       <h1>
@@ -10,16 +18,32 @@ const Header = () => {
       </h1>
       <nav>
         <ul>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/signup">signup</Link>
-          </li>
+          {!authenticated ? (
+            <>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/signup">signup</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <h4>
+                Welcome
+                <span>{firebase.getCurrentUsername()}</span>
+              </h4>
+              <li>
+                <button type="button" className="logout-btn" onClick={logoutUser}>
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
   );
 };
 
-export default Header;
+export default withRouter(withAuthContext(Header));

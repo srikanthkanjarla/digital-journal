@@ -3,12 +3,21 @@ import PropTypes from 'prop-types';
 import Note from './Note';
 
 const NoteList = props => {
-  const { notes = [] } = props;
+  const { notes = [], handleUpdateNote, handleDeleteNote } = props;
   return (
     <div className="notes-container">
       {notes.length !== 0 &&
         notes.map(note => {
-          return <Note key={note.id} title={note.title} body={note.body} />;
+          return (
+            <Note
+              key={note.id}
+              id={note.id}
+              title={note.title}
+              body={note.body}
+              handleDeleteNote={handleDeleteNote}
+              handleUpdateNote={handleUpdateNote}
+            />
+          );
         })}
     </div>
   );

@@ -82,7 +82,7 @@ class Firebase {
   }
 
   // update a note
-  updateNote(docID) {
+  updateNote(note) {
     // TODO - doc id, note text
     if (!this.auth.currentUser) {
       return null;
@@ -91,8 +91,8 @@ class Firebase {
       .collection('digital_notes')
       .doc(this.auth.currentUser.uid)
       .collection('notes')
-      .doc(docID)
-      .update({ title: 'update note', body: 'test update note' })
+      .doc(note.id)
+      .update({ title: note.title, body: note.body })
       .then(() => {
         console.log('Document successfully updated');
       })

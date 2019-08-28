@@ -5,7 +5,6 @@
   background-repeat: no-repeat;
   background-position: right;
   background-size: contain;
-  /* text-align: left; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,12 +21,13 @@
   width: 10rem;
   margin: 1.5rem 7rem;
   text-align: center;
-  border: 1px solid blue;
+  border: 1px solid #0000ff;
   padding: 1rem;
   color: #ffffff;
-  background-color: blue;
+  background-color: #0000ff;
   text-decoration: none;
   border-radius: 0.6rem;
+  font-weight: bold;
 }
 .home-private {
   padding: 0.5rem 2rem;
@@ -38,13 +38,13 @@
 .home-private a {
   position: fixed;
   top: 110px;
-  right: 10px;
+  right: 20px;
   margin: 0;
   width: 8rem;
-  font-weight: bold;
+  padding: 0.8rem;
 }
 .home-private a:hover {
   background-color: #ffffff;
-  color: blue;
+  color: #0000ff;
   transition: 100ms all ease;
 }

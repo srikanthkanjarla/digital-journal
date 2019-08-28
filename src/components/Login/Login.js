@@ -7,61 +7,56 @@ import Layout from '../Layout/Layout';
 import Button from '../UI/Button/Button';
 import Input from '../UI/Input/Input';
 import Label from '../UI/Label/Label';
-// import ErrorMessage from '../UI/InputErrorMessage/InputErrorMessage';
+import AlertMessage from '../UI/AlertMessage/AlertMessage';
 import './Login.css';
 
 const Login = props => {
+  // state data
   const [state, setState] = useState({ username: '', password: '' });
   const [isLogin, setLogin] = useState(false);
-  // const [usernameError, setusernameError] = useState(null);
-  // const [passwordError, setPasswordError] = useState(null);
-  // const [isFormValid, setFormValid] = useState(false);
+  const [alertMessage, setAlertMessage] = useState({ message: '', status: '', showAlert: false });
 
+  // destructure state and props
+  const { username, password } = state;
+  const { authenticated, history } = props;
+  const { message, status, showAlert } = alertMessage;
+
+  // redirect authenticated user to home page
+  useEffect(() => {
+    if (authenticated) {
+      history.replace('/');
+    }
+  });
+
+  // handle input change and update state
   const handleChange = event => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  // your password must be at least 6 characters
-  // please enter a valid email address
-  // please enter a username
-  // please enter a password
-
+  // handle user login
   const handleLogin = async event => {
     event.preventDefault();
-    // if (state.username.length <= 3) {
-    //   setusernameError('username must be at least 6 characters');
-    // }
-
-    // if (state.username.length === 0) {
-    //   setusernameError('Please enter a username');
-    // }
-    // if (state.password.length <= 5) {
-    //   setPasswordError('password must be at least 6 characters');
-    // }
-
-    // if (state.password.length === 0) {
-    //   setPasswordError('Please Enter a password');
-    // }
-    if (state.username.length !== 0 && state.password.length !== 0) {
+    if (username !== '' && password !== 0) {
       try {
-        await firebase.login(state.username, state.password);
         setLogin(true);
-        props.history.replace('/');
+        await firebase.login(state.username, state.password);
       } catch (error) {
-        alert(error.message);
+        setAlertMessage({ message: error.message, status: 'error', showAlert: true });
+        setLogin(false);
       }
     }
   };
-  useEffect(() => {
-    if (props.authenticated) {
-      props.history.replace('/');
-    }
-  });
+
+  // close alert message box
+  const cancelAlert = () => {
+    setAlertMessage(false);
+  };
 
   return (
     <Layout>
       <div className="login-form">
         <h2>Welcome back</h2>
+        {showAlert && <AlertMessage message={message} status={status} cancelAlert={cancelAlert} />}
         <form onSubmit={handleLogin}>
           <Label htmlForId="username">
             <Input
@@ -73,7 +68,6 @@ const Login = props => {
               placeholder="Username"
             />
           </Label>
-          {/* {usernameError && <ErrorMessage message={usernameError} />} */}
           <Label htmlForId="password">
             <Input
               id="password"
@@ -84,7 +78,6 @@ const Login = props => {
               placeholder="Password"
             />
           </Label>
-          {/* {passwordError && <ErrorMessage message={passwordError} />} */}
           <Button text="Login" disabled={isLogin} />
         </form>
         <p>
@@ -101,6 +94,7 @@ const Login = props => {
 
 Login.propTypes = {
   authenticated: PropTypes.bool.isRequired,
+  history: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.any])).isRequired,
 };
 
 export default withRouter(withAuthContext(Login));

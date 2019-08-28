@@ -1,0 +1,31 @@
+.alert-box {
+  max-width: 20rem;
+  margin: 1rem auto;
+  border-radius: 0.5rem;
+  position: relative;
+  padding: 0.3rem;
+  font-size: 1.2rem;
+}
+.alert-cancel-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: transparent;
+  border: none;
+  color: #ff4500;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+.alert-cancel-btn:hover {
+  background-color: rgba(255, 69, 0, 0.1);
+  border-radius: 0.4rem;
+}
+
+.success {
+  box-shadow: 0 0 3px 1px #279af1;
+  color: #0000ff;
+}
+.error {
+  color: #ff4500;
+  box-shadow: 0 0 3px 1px #ff4500;
+}

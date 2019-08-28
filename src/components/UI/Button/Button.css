@@ -1,12 +1,16 @@
 .btn {
-  background-color: #00b9f8;
+  background-color: #0000ff;
   color: white;
   width: 40%;
   max-width: 10rem;
   font-weight: 700;
   padding: 1rem;
   border: none;
-  box-shadow: 0 0 2px 0px #00b9f8;
+  box-shadow: 0 0 2px 0px #333;
   border-radius: 0.5rem;
   margin: 0.7rem auto;
+  cursor: pointer;
+}
+.btn:disabled {
+  cursor: not-allowed;
 }

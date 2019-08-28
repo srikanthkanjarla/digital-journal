@@ -25,5 +25,7 @@ const NoteList = props => {
 
 NoteList.propTypes = {
   notes: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))).isRequired,
+  handleDeleteNote: PropTypes.func.isRequired,
+  handleUpdateNote: PropTypes.func.isRequired,
 };
 export default NoteList;

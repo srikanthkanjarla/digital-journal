@@ -22,6 +22,12 @@ class Firebase {
     this.user = null;
   }
 
+  isFirebaseInitialized() {
+    return new Promise(resolve => {
+      return this.auth.onAuthStateChanged(resolve);
+    });
+  }
+
   login(email, password) {
     return this.auth.signInWithEmailAndPassword(email, password);
   }
@@ -42,9 +48,6 @@ class Firebase {
   }
 
   addNote(note) {
-    if (!this.auth.currentUser) {
-      return null;
-    }
     this.db
       .collection('digital_notes')
       .doc(this.auth.currentUser.uid)
@@ -64,9 +67,6 @@ class Firebase {
 
   // get current user all notes
   async getCurrentUserNotes() {
-    if (!this.auth.currentUser) {
-      return null;
-    }
     await this.db
       .collection('digital_notes')
       .doc(this.auth.currentUser.uid)
@@ -74,25 +74,19 @@ class Firebase {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          //   // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, ' => ', doc.data());
           return doc;
         });
       });
   }
 
   // update a note
-  updateNote(note) {
-    // TODO - doc id, note text
-    if (!this.auth.currentUser) {
-      return null;
-    }
+  updateNote(data) {
     this.db
       .collection('digital_notes')
       .doc(this.auth.currentUser.uid)
       .collection('notes')
-      .doc(note.id)
-      .update({ title: note.title, body: note.body })
+      .doc(data.id)
+      .update({ title: data.title, body: data.body })
       .then(() => {
         console.log('Document successfully updated');
       })
@@ -104,9 +98,6 @@ class Firebase {
   // delete a note
   deleteNote(docID) {
     // TODO - doc id
-    if (!this.auth.currentUser) {
-      return null;
-    }
     this.db
       .collection('digital_notes')
       .doc(this.auth.currentUser.uid)

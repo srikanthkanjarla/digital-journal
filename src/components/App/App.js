@@ -6,11 +6,19 @@ import Header from '../Header/Header';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
-import AddNote from '../Notes/AddNoteForm';
+import LoadingSpinner from '../UI/Spinner/Spinner';
 import './App.css';
 
 const App = () => {
   const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isInitialized, setInitialized] = useState(false);
+
+  firebase.isFirebaseInitialized().then(val => {
+    if (val) {
+      setInitialized(true);
+    }
+  });
+
   useEffect(() => {
     firebase.auth.onAuthStateChanged(user => {
       if (user) {
@@ -19,21 +27,22 @@ const App = () => {
         setAuthenticated(false);
       }
     });
-  }, []);
-  return (
+  });
+  return isInitialized ? (
     <AuthContext.Provider value={isAuthenticated}>
       <Router>
         <div className="app">
-          <Header authenticated={isAuthenticated} />
+          <Header />
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/signup" component={Signup} />
             <Route path="/login" component={Login} />
-            <Route path="/add-new-note" component={AddNote} />
           </Switch>
         </div>
       </Router>
     </AuthContext.Provider>
+  ) : (
+    <LoadingSpinner />
   );
 };
 

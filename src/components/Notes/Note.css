@@ -1,12 +1,8 @@
-.notes-container {
-  /* padding: 1rem; */
-  display: flex;
-  justify-content: flex-start;
-}
 .note-card {
-  flex: 0 0 1;
+  display: inline-block;
   background-color: #f9f871;
   width: 300px;
+  min-width: 250px;
   min-height: 130px;
   margin: 0.5rem;
   padding: 0.2rem 0 0.6rem 0;
@@ -43,10 +39,4 @@
 }
 .del-btn {
   color: brown;
-}
-
-.add-note-form form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }

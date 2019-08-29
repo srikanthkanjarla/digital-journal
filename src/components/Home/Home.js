@@ -5,66 +5,66 @@ import firebase from '../../firebase';
 import { withAuthContext } from '../Context';
 import NoteList from '../Notes/NoteList';
 import AlertMessage from '../UI/AlertMessage/AlertMessage';
-import Input from '../UI/Input/Input';
-import Button from '../UI/Button/Button';
-import Label from '../UI/Label/Label';
+import UpdateNoteForm from '../UI/AddNoteForm/AddNoteForm';
 import './Home.css';
 
 const Home = props => {
   const [notes, setNotes] = useState([]);
   const [state, setState] = useState({ id: '', title: '', body: '' });
-  const [updateNote, setUpdateNote] = useState(false);
+  const [formAction, setFormAction] = useState('');
+  const [showForm, setShowForm] = useState(false);
   const [alertMessage, setAlertMessage] = useState({ message: '', status: '', showAlert: false });
   const { authenticated } = props; // from auth context
-  const { id, title, body } = state;
   const { message, status, showAlert } = alertMessage;
 
+  const getAllNotes = () => {
+    const arr = [];
+    firebase.db
+      .collection('digital_notes')
+      .doc(firebase.auth.currentUser.uid)
+      .collection('notes')
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          arr.push({ id: doc.id, title: doc.data().title, body: doc.data().body });
+        });
+      })
+      .then(() => {
+        setNotes(arr);
+      })
+      .catch(error => {
+        setAlertMessage({ message: error.message, status: 'error', showAlert: true });
+      });
+  };
   useEffect(() => {
     if (authenticated) {
-      const arr = [];
-      firebase.db
-        .collection('digital_notes')
-        .doc(firebase.auth.currentUser.uid)
-        .collection('notes')
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            arr.push({ id: doc.id, title: doc.data().title, body: doc.data().body });
-          });
-        })
-        .then(() => {
-          setNotes(arr);
-        })
-        .catch(error => {
-          setAlertMessage({ message: error.message, status: 'error', showAlert: true });
-        });
+      getAllNotes();
     }
-  }, [authenticated]);
+  }, [showForm]);
 
-  const handleChange = event => {
-    setState({ ...state, [event.target.name]: event.target.value });
+  const handeleAddNote = () => {
+    setShowForm(true);
+    setFormAction('addNew');
   };
 
   const handleUpdateNote = docId => {
     const res = notes.filter(note => {
-      console.log(note, docId);
       return note.id === docId;
     });
-    // setUpdateNote(true);
-    // setState({ id, title: res[0].title, body: res[0].body });
-    console.log(res[0]);
+    const { id, title, body } = res[0];
+    setState({ id, title, body });
+    setShowForm(true);
+    setFormAction('update');
+    getAllNotes();
   };
 
-  const handleDeleteNote = noteID => {
-    firebase.deleteNote(noteID);
-    const arr = notes.filter(note => {
-      return note.id !== noteID;
-    });
-    setNotes(arr);
-  };
-
-  const updateFirebaseNote = () => {
-    firebase.updateNote(state);
+  const handleDeleteNote = id => {
+    firebase.deleteNote(id);
+    // const arr = notes.filter(note => {
+    //   return note.id !== id;
+    // });
+    // setNotes(arr);
+    getAllNotes();
   };
 
   // close alert message box
@@ -72,7 +72,10 @@ const Home = props => {
     setAlertMessage(false);
   };
 
-  console.log(state);
+  const closeForm = () => {
+    setShowForm(false);
+  };
+
   return (
     <div className="homepage">
       {!authenticated ? (
@@ -86,34 +89,10 @@ const Home = props => {
         <div className="home-private">
           <h2>My Notes</h2>
           {showAlert && <AlertMessage message={message} status={status} cancelAlert={cancelAlert} />}
-          {updateNote && (
-            <form onSubmit={updateFirebaseNote}>
-              <Label htmlForId="title">
-                <Input
-                  id="title"
-                  type="text"
-                  name="title"
-                  placeholder="Title"
-                  handleChange={handleChange}
-                  value={state.title}
-                  required
-                />
-              </Label>
-              <Label htmlForId="note">
-                <textarea
-                  id="note"
-                  rows="5"
-                  placeholder="Take a note..."
-                  name="body"
-                  onChange={handleChange}
-                  value={state.body}
-                  required
-                />
-              </Label>
-              <Button text="Update Note" />
-            </form>
-          )}
-          <Link to="/add-new-note">Add New Note</Link>
+          {showForm && <UpdateNoteForm formAction={formAction} data={state} closeForm={closeForm} />}
+          <button type="button" onClick={handeleAddNote} className="add-new-btn">
+            Add New Note
+          </button>
           <NoteList notes={notes} handleUpdateNote={handleUpdateNote} handleDeleteNote={handleDeleteNote} />
         </div>
       )}

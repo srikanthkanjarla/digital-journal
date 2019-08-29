@@ -6,18 +6,18 @@ import Header from '../Header/Header';
 import Home from '../Home/Home';
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
-import LoadingSpinner from '../UI/Spinner/Spinner';
+// import LoadingSpinner from '../UI/Spinner/Spinner';
 import './App.css';
 
 const App = () => {
   const [isAuthenticated, setAuthenticated] = useState(false);
-  const [isInitialized, setInitialized] = useState(false);
+  // const [isInitialized, setInitialized] = useState(false);
 
-  firebase.isFirebaseInitialized().then(val => {
-    if (val) {
-      setInitialized(true);
-    }
-  });
+  // firebase.isFirebaseInitialized().then(val => {
+  //   if (val) {
+  //     setInitialized(true);
+  //   }
+  // });
 
   useEffect(() => {
     firebase.auth.onAuthStateChanged(user => {
@@ -28,7 +28,7 @@ const App = () => {
       }
     });
   });
-  return isInitialized ? (
+  return (
     <AuthContext.Provider value={isAuthenticated}>
       <Router>
         <div className="app">
@@ -41,8 +41,6 @@ const App = () => {
         </div>
       </Router>
     </AuthContext.Provider>
-  ) : (
-    <LoadingSpinner />
   );
 };
 

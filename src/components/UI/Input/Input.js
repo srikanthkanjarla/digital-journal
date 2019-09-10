@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './Input.css';
 
 const InputField = props => {
-  const { id, type, name, value, handleChange, validateForm, styles, placeholder, required } = props;
+  const { id, type, name, value, handleChange, validateForm, cssClass, placeholder, required } = props;
   return (
     <input
       id={id}
@@ -13,9 +13,8 @@ const InputField = props => {
       onChange={handleChange}
       onBlur={validateForm}
       placeholder={placeholder}
-      className={`input-field ${styles || ''}`}
+      className={`input-field ${cssClass || ''}`}
       required={required && true}
-      autoComplete="off"
     />
   );
 };
@@ -26,14 +25,14 @@ InputField.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  styles: PropTypes.string,
+  cssClass: PropTypes.string,
   handleChange: PropTypes.func,
   validateForm: PropTypes.func,
   required: PropTypes.bool,
 };
 
 InputField.defaultProps = {
-  styles: null,
+  cssClass: null,
   handleChange: () => false,
   validateForm: () => false,
   placeholder: '',

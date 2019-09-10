@@ -6,6 +6,7 @@
   left: 0;
   background-color: rgba(255, 0, 136, 0.3);
   z-index: 99;
+  transition: 1s all ease-in-out;
 }
 .new-note-form {
   display: flex;
@@ -23,19 +24,5 @@
   min-width: 450px;
   border-radius: 0.6rem;
   position: relative;
-}
-
-.close-form {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  background-color: transparent;
-  border: none;
-  color: #ff4500;
-  font-size: 1.6rem;
-  cursor: pointer;
-}
-.close-form:hover {
-  background-color: rgba(255, 69, 0, 0.1);
-  border-radius: 0.4rem;
+  transition: 1.5s all ease-in;
 }

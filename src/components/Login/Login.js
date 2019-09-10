@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import firebase from '../../firebase';
-import { withAuthContext } from '../Context';
+import { withAuthContext } from '../AuthContext';
 import Layout from '../Layout/Layout';
 import Button from '../UI/Button/Button';
 import Input from '../UI/Input/Input';
 import Label from '../UI/Label/Label';
 import AlertMessage from '../UI/AlertMessage/AlertMessage';
+import Spinner from '../UI/Spinner/Spinner';
 import './Login.css';
 
 const Login = props => {
   // state data
   const [state, setState] = useState({ username: '', password: '' });
-  const [isLogin, setLogin] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const [alertMessage, setAlertMessage] = useState({ message: '', status: '', showAlert: false });
 
   // destructure state and props
@@ -36,13 +37,13 @@ const Login = props => {
   // handle user login
   const handleLogin = async event => {
     event.preventDefault();
-    if (username !== '' && password !== 0) {
+    if (username !== '' && password !== '') {
       try {
-        setLogin(true);
+        setProcessing(true);
         await firebase.login(state.username, state.password);
       } catch (error) {
+        setProcessing(false);
         setAlertMessage({ message: error.message, status: 'error', showAlert: true });
-        setLogin(false);
       }
     }
   };
@@ -57,7 +58,7 @@ const Login = props => {
       <div className="login-form">
         <h2>Welcome back</h2>
         {showAlert && <AlertMessage message={message} status={status} cancelAlert={cancelAlert} />}
-        <form onSubmit={handleLogin}>
+        <form>
           <Label htmlForId="username">
             <Input
               id="username"
@@ -66,6 +67,7 @@ const Login = props => {
               value={state.username}
               handleChange={handleChange}
               placeholder="Username"
+              required
             />
           </Label>
           <Label htmlForId="password">
@@ -76,9 +78,13 @@ const Login = props => {
               value={state.password}
               handleChange={handleChange}
               placeholder="Password"
+              required
             />
           </Label>
-          <Button text="Login" disabled={isLogin} />
+          <Button btnClass="btn btn-lg" disabled={processing} handleClick={handleLogin}>
+            Login
+            {processing && <Spinner size={1.5} theme="dark" />}
+          </Button>
         </form>
         <p>
           Don&apos;t have an account ?

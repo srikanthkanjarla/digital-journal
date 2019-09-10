@@ -1,6 +1,7 @@
 .header {
-  background-color: var(--primary-color);
-  padding: 1.3rem 0.3rem;
+  /* background-color: #0000ff; */
+  background-color: #0066b8;
+  padding: 1rem 0.3rem;
   color: #fff;
   display: flex;
   justify-content: center;
@@ -47,7 +48,7 @@
 .logout-btn {
   padding: 0.7rem 1.5rem;
   margin-right: 0.5rem;
-  border: 2px solid #fff;
+  border: 2px solid rgba(255, 250, 255, 0.6);
   background: transparent;
   color: #ffffff;
   font-weight: bold;

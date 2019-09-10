@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import firebase from '../../firebase';
-import { withAuthContext } from '../Context';
+import { withAuthContext } from '../AuthContext';
 import './Header.css';
 
 // const value = useContext(AuthContext);
@@ -44,6 +45,11 @@ const Header = props => {
       </nav>
     </header>
   );
+};
+
+Header.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
+  history: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.any])).isRequired,
 };
 
 export default withRouter(withAuthContext(Header));

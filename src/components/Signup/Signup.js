@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import firebase from '../../firebase';
-import { withAuthContext } from '../Context';
+import { withAuthContext } from '../AuthContext';
 import Layout from '../Layout/Layout';
 import Input from '../UI/Input/Input';
 import Label from '../UI/Label/Label';
@@ -142,7 +142,9 @@ const Signup = props => {
             />
           </Label>
           {password2Error && <ErrorMessage message={password2Error} />}
-          <Button text="Register Now" disabled={isSubmitted} />
+          <Button btnClass="btn btn-lg" disabled={isSubmitted}>
+            Register Now
+          </Button>
         </form>
         <p>
           Already have an account?

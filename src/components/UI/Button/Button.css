@@ -1,16 +1,58 @@
 .btn {
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  color: #ffffff;
+  font-size: 1rem;
+}
+.btn:disabled {
+  cursor: not-allowed;
+}
+.btn-lg {
   background-color: #0000ff;
   color: white;
   width: 40%;
   max-width: 10rem;
   font-weight: 700;
-  padding: 1rem;
-  border: none;
-  box-shadow: 0 0 2px 0px #333;
+  height: 2.8rem;
   border-radius: 0.5rem;
   margin: 0.7rem auto;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.btn:disabled {
-  cursor: not-allowed;
+.btn-close,
+.btn-edit {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  margin: 2px;
+  font-size: 1.2rem;
+  border-radius: 0.4rem;
+}
+.btn-close {
+  color: #ff4500;
+}
+.btn-edit {
+  color: #0066b8;
+}
+.btn-edit:hover {
+  background-color: rgba(0, 102, 184, 0.2);
+}
+.btn-close:hover {
+  background-color: rgba(255, 69, 0, 0.1);
+}
+.btn-add-new {
+  align-self: flex-end;
+  padding: 0.8rem;
+  background-color: #ec1169;
+  box-shadow: 0 8px 6px -6px #adaaaa;
+  margin: 2px;
+}
+.btn-add-new:hover {
+  background-color: #fb4f93;
+  transition: 100ms all ease-out;
+  box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.6);
 }

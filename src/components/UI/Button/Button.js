@@ -3,20 +3,24 @@ import PropTypes from 'prop-types';
 import './Button.css';
 
 const Button = props => {
-  const { text, disabled } = props;
+  const { disabled, children, btnClass, handleClick } = props;
   return (
-    <button disabled={disabled} type="submit" className="btn">
-      {text}
+    <button disabled={disabled} type="button" className={btnClass} onClick={handleClick}>
+      {children}
     </button>
   );
 };
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
+  btnClass: PropTypes.string,
+  handleClick: PropTypes.func,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
 };
 
 Button.defaultProps = {
   disabled: false,
+  btnClass: null,
+  handleClick: null,
 };
 export default Button;

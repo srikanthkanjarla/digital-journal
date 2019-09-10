@@ -4,21 +4,20 @@ import Note from './Note';
 
 const NoteList = props => {
   const { notes = [], handleUpdateNote, handleDeleteNote } = props;
-  const cardColors = ['#F9F871', '#F9EAFF', '#C5FCEF', '#EFA6FF', '#52FBDD', '#FFBB33'];
+
   return (
     <div className="notes-container">
       {notes.length !== 0 &&
         notes.map(note => {
-          const color = cardColors[Math.floor(Math.random() * cardColors.length)];
           return (
             <Note
               key={note.id}
               id={note.id}
               title={note.title}
               body={note.body}
+              color={note.color}
               handleDeleteNote={handleDeleteNote}
               handleUpdateNote={handleUpdateNote}
-              color={color}
             />
           );
         })}
@@ -31,4 +30,5 @@ NoteList.propTypes = {
   handleDeleteNote: PropTypes.func.isRequired,
   handleUpdateNote: PropTypes.func.isRequired,
 };
+
 export default NoteList;

@@ -28,14 +28,17 @@ class Firebase {
     });
   }
 
+  // authenticate user
   login(email, password) {
     return this.auth.signInWithEmailAndPassword(email, password);
   }
 
+  // logout user
   logout() {
     return this.auth.signOut();
   }
 
+  // register new user
   async register(name, email, password) {
     await this.auth.createUserWithEmailAndPassword(email, password);
     return this.auth.currentUser.updateProfile({
@@ -43,12 +46,14 @@ class Firebase {
     });
   }
 
+  // get current authenticated user name
   getCurrentUsername() {
     return this.auth.currentUser && this.auth.currentUser.displayName;
   }
 
+  // save new note to firebase
   addNote(note) {
-    this.db
+    return this.db
       .collection('digital_notes')
       .doc(this.auth.currentUser.uid)
       .collection('notes')
@@ -56,12 +61,6 @@ class Firebase {
         title: note.title,
         body: note.body,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-      .then(docRef => {
-        console.log('Document written with ID', docRef.id);
-      })
-      .catch(error => {
-        console.log('Error adding document', error);
       });
   }
 
@@ -81,35 +80,22 @@ class Firebase {
 
   // update a note
   updateNote(data) {
-    this.db
+    return this.db
       .collection('digital_notes')
       .doc(this.auth.currentUser.uid)
       .collection('notes')
       .doc(data.id)
-      .update({ title: data.title, body: data.body })
-      .then(() => {
-        console.log('Document successfully updated');
-      })
-      .catch(error => {
-        console.log('Error updaing document', error);
-      });
+      .update({ title: data.title, body: data.body });
   }
 
   // delete a note
   deleteNote(docID) {
-    // TODO - doc id
-    this.db
+    return this.db
       .collection('digital_notes')
       .doc(this.auth.currentUser.uid)
       .collection('notes')
       .doc(docID)
-      .delete()
-      .then(() => {
-        console.log('Document successfully deleted');
-      })
-      .catch(error => {
-        console.log('Error removing document', error);
-      });
+      .delete();
   }
 }
 export default new Firebase();
